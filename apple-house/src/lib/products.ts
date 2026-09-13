@@ -1,7 +1,10 @@
+import { prisma } from "@/lib/prisma";
+
 export type Categoria = "iphone" | "mac" | "ipad" | "accesorios" | "otros";
 export type Estado = "nuevo" | "usado";
 
 export interface Producto {
+  id?: string;
   modelo: string;
   cat: Categoria;
   estado: Estado;
@@ -9,6 +12,32 @@ export interface Producto {
   color: string;
   memoria: string;
   precio: number;
+}
+
+export async function getProductosDb(): Promise<Producto[]> {
+  try {
+    const dbProducts = await prisma.producto.findMany({
+      where: { visible: true },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (dbProducts.length > 0) {
+      return dbProducts.map((p) => ({
+        id: p.id,
+        modelo: p.modelo,
+        cat: p.categoria.toLowerCase() as Categoria,
+        estado: p.estado.toLowerCase() as Estado,
+        bateria: p.bateria || "—",
+        color: p.color || "—",
+        memoria: p.memoria || "—",
+        precio: p.precioVenta,
+      }));
+    }
+  } catch (error) {
+    console.error("Error cargando productos de la base de datos:", error);
+  }
+
+  return productos;
 }
 
 // NOTA: en la Etapa 2 (panel admin) este array pasa a venir de la base de datos.

@@ -34,7 +34,7 @@ export default function Hero() {
             </a>
           </div>
           <div className="hero-stats">
-            <div className="stat"><b>4.174</b><span>seguidores en Instagram</span></div>
+            <div className="stat"><b>+4.000</b><span>seguidores en Instagram</span></div>
             <div className="stat"><b>30 días</b><span>de garantía en usados</span></div>
             <div className="stat"><b>propio</b><span>service técnico en el local</span></div>
           </div>

@@ -10,7 +10,11 @@ import Footer from "@/components/Footer";
 import Reviews from "@/components/Reviews";
 
 
-export default function Home() {
+import { getProductosDb } from "@/lib/products";
+
+export default async function Home() {
+  const dbProductos = await getProductosDb();
+
   return (
     <>
       <Header />
@@ -19,7 +23,7 @@ export default function Home() {
         <About />
         <WhyUs />
         <Reviews />
-        <Stock />
+        <Stock initialProductos={dbProductos} />
         <Service />
         <Contact />
       </main>

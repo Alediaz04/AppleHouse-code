@@ -50,14 +50,16 @@ function consultarLink(p: Producto) {
   return waLink(`Hola! Vi en la web que tienen ${p.modelo} (${p.color}, ${p.memoria}) a USD ${p.precio}. ¿Sigue disponible?`);
 }
 
-export default function Stock() {
+export default function Stock({ initialProductos }: { initialProductos?: Producto[] }) {
   const [filtroCat, setFiltroCat] = useState<Categoria | "todos">("todos");
   const [filtroEstado, setFiltroEstado] = useState<Estado | "todos">("todos");
   const [filtroTexto, setFiltroTexto] = useState("");
   const [modalIndex, setModalIndex] = useState<number | null>(null);
 
+  const lista = initialProductos && initialProductos.length > 0 ? initialProductos : productos;
+
   const items = useMemo(() => {
-    return productos.filter((p) => {
+    return lista.filter((p) => {
       if (filtroCat !== "todos" && p.cat !== filtroCat) return false;
       if (filtroEstado !== "todos" && p.estado !== filtroEstado) return false;
       if (filtroTexto) {
@@ -66,7 +68,7 @@ export default function Stock() {
       }
       return true;
     });
-  }, [filtroCat, filtroEstado, filtroTexto]);
+  }, [lista, filtroCat, filtroEstado, filtroTexto]);
 
   const modalProduct = modalIndex !== null ? items[modalIndex] : null;
 
